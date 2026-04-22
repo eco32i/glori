@@ -11,6 +11,18 @@ TOTAL_CORES = 256
 MAP_THREADS = 120 if len(SAMPLES) <= 2 else 32
 INDEX_THREADS = 128
 
+# HISAT-3N Index Logic
+# If hisat3n_index_dir is provided in config, use it. Otherwise build it in results.
+EXTERNAL_INDEX_DIR = config.get("hisat3n_index_dir")
+if EXTERNAL_INDEX_DIR:
+    HISAT3N_INDEX_DIR = EXTERNAL_INDEX_DIR
+    HISAT3N_INDEX_PREFIX = os.path.join(HISAT3N_INDEX_DIR, "hisat3n")
+    INDEX_DEP = []
+else:
+    HISAT3N_INDEX_DIR = os.path.join(RESULTS_DIR, "index/hisat3n")
+    HISAT3N_INDEX_PREFIX = os.path.join(HISAT3N_INDEX_DIR, "hisat3n")
+    INDEX_DEP = [HISAT3N_INDEX_DIR]
+
 rule all:
     input:
         os.path.join(RESULTS_DIR, "multiqc/multiqc_report.html"),
@@ -19,7 +31,7 @@ rule all:
 rule compare_results:
     input:
         modern = os.path.join(RESULTS_DIR, "m6A_calls_modern.csv"),
-        gt = "results/ground_truth/m6A_calls.csv"
+        gt = "data/test/ground_truth/m6A_calls.csv"
     output:
         os.path.join(RESULTS_DIR, "comparison.txt")
     conda: "envs/glori_v2.yaml"
@@ -72,7 +84,7 @@ rule trim_adapters:
 rule map_and_sort:
     input:
         fastq = os.path.join(RESULTS_DIR, "tmp/{sample}.trimmed.fq.gz"),
-        index = os.path.join(RESULTS_DIR, "index/hisat3n")
+        index = INDEX_DEP
     output:
         bam = os.path.join(RESULTS_DIR, "mapped/{sample}.sorted.bam")
     threads: MAP_THREADS
@@ -88,7 +100,7 @@ rule map_and_sort:
             --rna-strandness F \
             --no-unal \
             -U - \
-            -x {input.index}/hisat3n \
+            -x {HISAT3N_INDEX_PREFIX} \
         | samtools sort -@ $ST_THREADS -o {output.bam} - 2> {log}
         """
 

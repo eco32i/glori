@@ -5,3 +5,7 @@ sample_to_fastq:
 
 reference_fasta: "/mnt/ssd/ref/nfcore/GLORI/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa"
 reference_gtf: "/mnt/ssd/ref/nfcore/GLORI/Homo_sapiens.GRCh38.112.gtf"
+
+# Optional: Provide path to pre-built HISAT-3N index directory
+# If not provided, it will be built in results/index/hisat3n/
+# hisat3n_index_dir: "/path/to/hisat3n_index"

@@ -5,13 +5,7 @@
 results/
 
 # Logs
-logs/*
-!logs/README.md
-
-# Results (keep ground_truth)
-results/*
-!results/ground_truth/
-!results/comparison.txt
+logs/
 
 # Data (keep test data)
 data/*
