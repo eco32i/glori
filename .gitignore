@@ -2,7 +2,7 @@
 .snakemake/
 
 # Pipeline results
-results/index/
+results/
 
 # Logs
 logs/*
