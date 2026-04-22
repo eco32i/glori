@@ -1,14 +1,7 @@
 results_dir: "results"
 sample_to_fastq:
-    "test1": "GLORI_pipeline/notebook/test1.fastq.gz"
-    "test2": "GLORI_pipeline/notebook/test2.fastq.gz"
+    "test1": "data/test/test1.fastq.gz"
+    "test2": "data/test/test2.fastq.gz"
 
-#As far as I know, you must compile your own hisat2 in order for the hisat2_path
-#to work correctly. You can not module load it. You can not conda activate it.
-#This is because the scripts will be looking for executables such as extract_exons.py
-#in a specific place
-hisat2_path: "hisat2"
-hisat2_index_dir: "../ref/hisat2idx"
 reference_fasta: "/mnt/ssd/ref/nfcore/GLORI/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa"
 reference_gtf: "/mnt/ssd/ref/nfcore/GLORI/Homo_sapiens.GRCh38.112.gtf"
-db_path: "../DB"

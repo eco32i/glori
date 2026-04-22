@@ -1,65 +1,68 @@
-# GLORI Snakemake workflow
+# GLORI-seq Snakemake Workflow (v2.0)
 
-## Credits
+A modernized, high-performance bioinformatics pipeline for GLORI-seq (A-to-G conversion) analysis. This version leverages native HISAT-3N alignment and a streamlined "zero-intermediate" architecture.
 
-This repository is little more than a [Snakemake](https://snakemake.readthedocs.io/en/stable/) wrapper for the following repositories (as well as some related scripts):
+## Key Features
 
-- [`jhfoxliu/GLORI_pipeline`](https://github.com/jhfoxliu/GLORI_pipeline)
-- [`SYSU-zhanglab/RNA-m5C`](https://github.com/SYSU-zhanglab/RNA-m5C)
+- **HISAT-3N Integration:** Native 3-nucleotide mapping for high accuracy and speed.
+- **Zero-Intermediate Files:** Piped pre-processing (`umi_tools` -> `cutadapt` -> `hisat-3n`) minimizes disk I/O.
+- **Parallelized Site Calling:** Genome-wide m6A calling is distributed across available CPUs.
+- **HPC Ready:** Includes profiles for Local (Fat-node) and Slurm environments.
 
-Credit is due to Fox (`jfoxliu`) for creating `GLORI_pipeline` as well as the scripts in the `scripts/` directory of this repository.
+## Prerequisites
 
-## Cloning this repository
+- **Conda / Mamba:** Used for software deployment.
+- **Snakemake 8.x:** Core workflow engine.
 
-The abovementioned repositories are included as submodules. Here is how to clone *this* repository and include the above dependencies:
+## Installation
 
-    git clone --recurse-submodules https://github.com/gp-micro/glori
+```bash
+git clone --recurse-submodules https://github.com/gp-micro/glori
+cd glori
+```
 
 ## Configuration
 
-Configuration of the pipeline takes place through the file `config.yaml`, which looks like this:
+Modify `config.yaml` to specify your data and reference paths:
 
-    results_dir: "results"
-    sample_to_fastq:
-        "test1": "GLORI_pipeline/notebook/test1.fastq.gz"
-        "test2": "GLORI_pipeline/notebook/test2.fastq.gz"
+```yaml
+results_dir: "results"
+sample_to_fastq:
+    "sample1": "data/sample1.fastq.gz"
+    "sample2": "data/sample2.fastq.gz"
 
-    hisat2_path: "MYSCRATCH/GLORI/hisat2"
-    hisat2_index_dir: "MYSCRATCH/GLORI_HISAT2_INDEXES"
-    reference_fasta: "PATH_TO_REF_FASTA"
-    reference_gtf: "PATH_TO_REF_GTF"
-    db_path: "MYSCRATCH/db_will_be_created_here"
+reference_fasta: "path/to/genome.fa"
+reference_gtf: "path/to/annotation.gtf"
+```
 
-This Snakemake workflow currently *does not* perform the steps needed to generate the HISAT2 indexes. But I plan to add them.
+## Running the Pipeline
 
-## Software requirements
+### Local / Fat-Node (256 CPU)
+```bash
+snakemake --profile profiles/local --use-conda
+```
 
-- conda (I have been using 4.11.0 - I know, I know)
-- Snakemake (I have been using version 8.16.0)
-- The [HISAT2 aligner](https://daehwankimlab.github.io/hisat2/) version 2.1.0 must be compiled ([instructions here](#compiling-hisat2)) and then the path to the directory *containing* the executable must be specified as the `hisat2_path` parameter in `config.yaml`. So far I have not been able to run the scripts with a HISAT2 loaded via `bioconda` or via `module load`.
+### Slurm Cluster
+```bash
+snakemake --profile profiles/slurm --use-conda
+```
 
-## Running
+## Pipeline Steps
 
-    CACHE=MYSCRATCH/snakemake_conda_cache
-    snakemake --cores 10 \
-        --software-deployment-method conda --conda-prefix $CACHE --conda-frontend conda \
-        evaluate_calls
+1. **Indexing:** Builds a HISAT-3N index with splice site and exon information.
+2. **Mapping:** Performs UMI extraction, adapter trimming, and 3N alignment in a single stream.
+3. **Deduplication:** Removes PCR duplicates using UMIs.
+4. **Site Calling:** Calls m6A sites using a binomial test against estimated background conversion rates.
+5. **QC:** Aggregates logs into a single MultiQC report.
 
-You may not need `--conda-frontend conda` if you have a relatively recent version of `conda`. 
+## Directory Structure
 
-## Current status of development
+- `Snakefile`: Main workflow definition.
+- `scripts/`: Custom Python 3.11 logic for site calling and merging.
+- `envs/`: Unified Conda environment definition.
+- `profiles/`: Cluster and local execution profiles.
+- `results/`: output directory for BAMs, VCFs, and reports.
+- `results/ground_truth/`: Original results used for verification.
 
-At the moment, this Snakemake workflow assumes you have generated the necessary HISAT2 indexes.
-
-![Workflow DAG](pipeline_dag.svg)
-
-## Compiling HISAT2
-
-First go to a directory where you want to build HISAT2
-
-    git clone --branch v2.1.0 --depth 1 https://github.com/DaehwanKimLab/hisat2
-    cd hisat2
-    make
-    pwd
-
-Use the resulting path as the `hisat2_path` parameter in `config.yaml`.
+---
+*Maintained by Gemini CLI - April 2026*
