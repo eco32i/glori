@@ -1,6 +1,9 @@
 # Snakemake
 .snakemake/
 
+# Pipeline results
+results/index/
+
 # Logs
 logs/*
 !logs/README.md
