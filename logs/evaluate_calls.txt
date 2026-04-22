@@ -1,0 +1,2 @@
+[2026-04-16 00:36:06] CMD: GLORI_pipeline/scripts/evaluate_sites.py -i results/m6A_calls.csv -o results/m6A_calls_w_reliability.csv
+[2026-04-16 00:36:06] Finished.

@@ -1,0 +1,19 @@
+name: glori_v2
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.11
+  - pandas>=2.0.0
+  - numpy>=1.24.0
+  - scipy>=1.10.0
+  - pysam>=0.21.0
+  - umi_tools>=1.1.4
+  - cutadapt>=4.4
+  - samtools>=1.17
+  - bcftools>=1.17
+  - multiqc>=1.14
+  - snakemake>=7.25.0
+  - hisat-3n>=0.0.3
+  - biopython>=1.81
+  - pigz

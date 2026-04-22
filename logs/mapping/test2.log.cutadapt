@@ -1,0 +1,4 @@
+This is cutadapt 5.2 with Python 3.11.15
+Command line parameters: -a AGATCGGAAGAGCGTCGTG --max-n 0 --trimmed-only -e 0.1 -q 30 -m 30 -
+Processing single-end reads on 1 core ...
+No reads processed!

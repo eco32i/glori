@@ -10,7 +10,7 @@ def changeDict(key,gene_id,trans_id):
 			   'length': transLen.get(trans_id),
 			   'geneName': geneName.get(gene_id),
 			   'isoformName': isoformName.get(trans_id),
-			   'order':order[biotype.get(gene_id)]
+			   'order':order.get(biotype.get(gene_id), -2)
 			 }
 
 description = """
@@ -186,11 +186,11 @@ with open(options.input,'r') as input,open(options.output,'w') as output:
 							changeDict(key,gene_id,trans_id)
 				else:
 					#if order[type] > GENES[key]['order']:
-					if order.get(type) > GENES[key]['order']:
+					if order.get(type, -2) > GENES[key]['order']:
 						tmp = LINE
 						changeDict(key,gene_id,trans_id)
 					#elif order[type] == GENES[key]['order']:
-					elif order.get(type) == GENES[key]['order']:
+					elif order.get(type, -2) == GENES[key]['order']:
 						if GENES[key]['length'] < transLen.get(trans_id):
 							tmp = LINE
 							changeDict(key,gene_id,trans_id)

@@ -1,0 +1,26 @@
+[2026-04-15 23:56:33]Converting results/cutadapt_trimmed_decompressed/test1.fastq, A2G...
+[2026-04-15 23:56:36]Mapping with hisat2, TEMP prefix: hisat2_2672580
+[2026-04-15 23:56:56]T2C report:
+792964 reads; of these:
+  792964 (100.00%) were unpaired; of these:
+    507357 (63.98%) aligned 0 times
+    241099 (30.40%) aligned exactly 1 time
+    44508 (5.61%) aligned >1 times
+36.02% overall alignment rate
+
+[2026-04-15 23:57:04]A2G report:
+792964 reads; of these:
+  792964 (100.00%) were unpaired; of these:
+    501447 (63.24%) aligned 0 times
+    235403 (29.69%) aligned exactly 1 time
+    56114 (7.08%) aligned >1 times
+36.76% overall alignment rate
+
+[2026-04-15 23:57:04]Handling SAM outputs...
+[2026-04-15 23:57:24]Completed successfully:
+ Total reads: 792964
+ Unique mapping: 363531 (45.845%)
+   A2G: 180093 (22.71%)
+   T2C: 183438 (23.13%)
+ Multiple mapping: 109940 (13.864%)
+ Unmapped: 319493 (40.291%)

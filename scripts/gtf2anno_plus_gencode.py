@@ -39,12 +39,18 @@ if __name__ == "__main__":
 				try:
 					gene_biotype = row[row.index("gene_type")+1].replace('\"','').strip(";")
 				except ValueError:
-					gene_biotype = "NA"
+					try:
+						gene_biotype = row[row.index("gene_biotype")+1].replace('\"','').strip(";")
+					except ValueError:
+						gene_biotype = "NA"
 				
 				try:
 					transcript_biotype = row[row.index("transcript_type")+1].replace('\"','').strip(";")
 				except ValueError:
-					transcript_biotype = gene_biotype
+					try:
+						transcript_biotype = row[row.index("transcript_biotype")+1].replace('\"','').strip(";")
+					except ValueError:
+						transcript_biotype = gene_biotype
 
 				try:
 					gene_name = row[row.index("gene_name")+1].replace('\"','').strip(";")

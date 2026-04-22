@@ -1,0 +1,4 @@
+use-conda: true
+cores: 256
+resources:
+  - mem_mb=256000
