@@ -17,7 +17,7 @@ A modernized, high-performance bioinformatics pipeline for GLORI-seq (A-to-G con
 ## Installation
 
 ```bash
-git clone --recurse-submodules https://github.com/gp-micro/glori
+git clone --branch reimplementation --recurse-submodules https://github.com/eco32i/glori
 cd glori
 ```
 
@@ -33,6 +33,10 @@ sample_to_fastq:
 
 reference_fasta: "path/to/genome.fa"
 reference_gtf: "path/to/annotation.gtf"
+
+# Optional: Provide path to pre-built HISAT-3N index directory
+# If not provided, it will be built in results/index/hisat3n/
+# hisat3n_index_dir: "/path/to/hisat3n_index"
 ```
 
 ## Running the Pipeline
